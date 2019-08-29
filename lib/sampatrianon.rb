@@ -2,10 +2,33 @@ require "sampatrianon/version"
 
 require "f1sales_custom/parser"
 require "f1sales_custom/source"
+require "f1sales_custom/hooks"
 require "f1sales_helpers"
 
 module Sampatrianon
   class Error < StandardError; end
+
+  class F1SalesCustom::Hooks::Lead
+
+    class << self
+
+      def switch_source(lead)
+        if lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('lapa')
+          lead.source.name + source[:facebook_lapa]
+        else
+          lead.source.name
+        end
+      end
+
+      def source
+        {
+          facebook_lapa: ' - Lapa'
+        }
+      end
+    end
+  end
+
+  
   class F1SalesCustom::Email::Source 
     def self.all
       [
