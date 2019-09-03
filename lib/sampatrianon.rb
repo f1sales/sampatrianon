@@ -20,7 +20,7 @@ module Sampatrianon
           customer = lead.customer
 
           HTTParty.post(
-            'https://trianongastao.f1sales.org/leads',
+            'https://trianongastao.f1sales.org/integrations/leads',
             body: {
               lead: {
                 message: lead.message,
