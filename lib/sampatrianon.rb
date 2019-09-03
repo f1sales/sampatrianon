@@ -4,6 +4,7 @@ require "f1sales_custom/parser"
 require "f1sales_custom/source"
 require "f1sales_custom/hooks"
 require "f1sales_helpers"
+require "httparty"
 
 module Sampatrianon
   class Error < StandardError; end
@@ -15,6 +16,32 @@ module Sampatrianon
       def switch_source(lead)
         if lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('lapa')
           lead.source.name + source[:facebook_lapa]
+        elsif lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('gastão')
+          customer = lead.customer
+
+          HTTParty.post(
+            'https://trianongastao.f1sales.org/leads',
+            body: {
+              lead: {
+                message: lead.message,
+                customer: {
+                  name: customer.name,
+                  email: customer.email,
+                  phone: customer.phone,
+                },
+                product: {
+                  name: lead.product.name
+                },
+                source: {
+                  name: lead.source.name
+                }
+              }
+            },
+            headers: {
+              'Accept'=>'application/json',
+              'Content-Type'=>'application/x-www-form-urlencoded',
+            }
+          )
         else
           lead.source.name
         end
