@@ -81,7 +81,7 @@ module Sampatrianon
 
   class F1SalesCustom::Email::Parser
     def parse
-      parsed_email = @email.body.colons_to_hash(/(Telefone|Origem|Nome|E-mail|Mensagem|Link da Land).*?:/, false)
+      parsed_email = @email.body.colons_to_hash(/(Telefone|Origem|Nome|Site|E-mail|Mensagem|Link da Land).*?:/, false)
 
       all_sources = F1SalesCustom::Email::Source.all
       destinatary = @email.to.map { |email| email[:email].split('@').first } 
@@ -91,7 +91,7 @@ module Sampatrianon
         source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem']).downcase.include?('peugeot')
       elsif  destinatary.include?('websitelapa')
         source = all_sources[2] 
-        source = all_sources[3] if (parsed_email['link_da_land'] || parsed_email['origem']).downcase.include?('peugeot')
+        source = all_sources[3] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
         source = all_sources[3] if (parsed_email['site'] || '').downcase.include?('peugeot')
       end
 
