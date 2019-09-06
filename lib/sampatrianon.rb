@@ -92,6 +92,7 @@ module Sampatrianon
       elsif  destinatary.include?('websitelapa')
         source = all_sources[2] 
         source = all_sources[3] if (parsed_email['link_da_land'] || parsed_email['origem']).downcase.include?('peugeot')
+        source = all_sources[3] if (parsed_email['site'] || '').downcase.include?('peugeot')
       end
 
       {
