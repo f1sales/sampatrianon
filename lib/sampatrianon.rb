@@ -42,6 +42,8 @@ module Sampatrianon
               'Content-Type'=>'application/x-www-form-urlencoded',
             }
           )
+
+          return nil
         else
           lead.source.name
         end
@@ -60,14 +62,6 @@ module Sampatrianon
     def self.all
       [
         {
-          email_id: 'websitegastao',
-          name: 'Website - Gastão - Citroen'
-        },
-        {
-          email_id: 'websitegastao',
-          name: 'Website - Gastão - Pegeout'
-        },
-        {
           email_id: 'websitelapa',
           name: 'Website - Lapa - Citroen'
         },
@@ -85,15 +79,10 @@ module Sampatrianon
 
       all_sources = F1SalesCustom::Email::Source.all
       destinatary = @email.to.map { |email| email[:email].split('@').first } 
-      source = all_sources[0] 
 
-      if destinatary.include?('websitegastao')
-        source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem']).downcase.include?('peugeot')
-      elsif  destinatary.include?('websitelapa')
-        source = all_sources[2] 
-        source = all_sources[3] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
-        source = all_sources[3] if (parsed_email['site'] || '').downcase.include?('peugeot')
-      end
+      source = all_sources[0]
+      source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
+      source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
 
       {
         source: {
