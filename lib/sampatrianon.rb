@@ -43,7 +43,7 @@ module Sampatrianon
             }
           )
 
-          return nil
+          raise 'Avoiding lead creation'
         else
           lead.source.name
         end

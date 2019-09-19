@@ -91,14 +91,14 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
             'Content-Type'=>'application/x-www-form-urlencoded'
           }).to_return(status: 200, body: "", headers: {})
 
-        described_class.switch_source(lead)
       end
 
-      it 'returns nil' do
-        expect(described_class.switch_source(lead)).to be_nil
+      it 'raise an error' do
+        expect { described_class.switch_source(lead)}.to raise_error('Avoiding lead creation')
       end
 
       it 'post to gastao vidigal' do
+        described_class.switch_source(lead) rescue nil
         expect(WebMock).to have_requested(:post, call_url).
           with(body: lead_payload)
       end
