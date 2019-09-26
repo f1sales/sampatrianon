@@ -93,8 +93,8 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
 
       end
 
-      it 'raise an error' do
-        expect { described_class.switch_source(lead)}.to raise_error('Avoiding lead creation')
+      it 'returns nil' do
+        expect(described_class.switch_source(lead)).to be_nil
       end
 
       it 'post to gastao vidigal' do
