@@ -69,6 +69,10 @@ module Sampatrianon
           email_id: 'websitelapa',
           name: 'Website - Lapa - Pegeout'
         },
+        {
+          email_id: 'websitelapa',
+          name: 'Website - Lapa - PCD'
+        },
       ]
     end
   end
@@ -83,6 +87,7 @@ module Sampatrianon
       source = all_sources[0]
       source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
       source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
+      source = all_sources[2] if @email.subject.downcase.include?('pcd')
 
       {
         source: {
