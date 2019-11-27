@@ -4,7 +4,7 @@ require "f1sales_custom/parser"
 require "f1sales_custom/source"
 require "f1sales_custom/hooks"
 require "f1sales_helpers"
-require "httparty"
+require "http"
 
 module Sampatrianon
   class Error < StandardError; end
@@ -19,9 +19,9 @@ module Sampatrianon
         elsif lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('gastão')
           customer = lead.customer
 
-          HTTParty.post(
+          HTTP.post(
             'https://trianongastao.f1sales.org/integrations/leads',
-            body: {
+            json: {
               lead: {
                 message: lead.message,
                 customer: {
@@ -37,10 +37,6 @@ module Sampatrianon
                 }
               }
             },
-            headers: {
-              'Accept'=>'application/json',
-              'Content-Type'=>'application/x-www-form-urlencoded',
-            }
           )
 
           return nil

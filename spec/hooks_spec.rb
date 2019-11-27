@@ -70,8 +70,8 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
             message: lead.message,
             customer: {
               name: customer.name,
-              phone: customer.phone,
               email: customer.email,
+              phone: customer.phone,
             },
             product: {
               name: product.name
@@ -85,12 +85,7 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
 
       before do
         stub_request(:post, call_url).
-          with(body: lead_payload,
-               headers: {
-            'Accept'=>'application/json',
-            'Content-Type'=>'application/x-www-form-urlencoded'
-          }).to_return(status: 200, body: "", headers: {})
-
+          with(body: lead_payload.to_json).to_return(status: 200, body: "", headers: {})
       end
 
       it 'returns nil' do
