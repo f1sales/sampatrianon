@@ -22,7 +22,7 @@ GIT
 PATH
   remote: .
   specs:
-    sampatrianon (0.1.7)
+    sampatrianon (0.1.9)
 
 GEM
   remote: https://rubygems.org/

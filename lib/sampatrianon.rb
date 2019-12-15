@@ -20,7 +20,7 @@ module Sampatrianon
           customer = lead.customer
 
           HTTP.post(
-            'https://lojateste.f1sales.org/integrations/leads',
+            'https://trianongastao.f1sales.org/integrations/leads',
             json: {
               lead: {
                 message: lead.message,

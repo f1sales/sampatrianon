@@ -62,7 +62,7 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
         lead
       end
 
-      let(:call_url){ "https://lojateste.f1sales.org/integrations/leads" }
+      let(:call_url){ "https://trianongastao.f1sales.org/integrations/leads" }
 
       let(:lead_payload) do
         {
