@@ -19,14 +19,14 @@ RSpec.describe F1SalesCustom::Email::Parser do
 
       it 'contains website pcd as source name' do
         expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[3][:name])
-      end 
+      end
 
     end
 
     context 'when is about a pcd' do
       let(:email) do
         email = OpenStruct.new
-        email.to = [email: 'websitelapa@lojateste.f1sales.org']
+        email.to = [email: 'website@lojateste.f1sales.org']
         email.subject = 'Campanha - PCD C4 CACTUS'
         email.body = "Contato via site\n\n*Nome:*\n\nJoao\n\n*E-mail:*\n\njoao.marcos@criah.com.br\n\n*Telefone:*\n\n(11) 1 1111-1111\n\n*Loja:*\n\nGastão Vidigal\n\n*Mensagem:*\n\nTeste\n\n-----------------------------------------------------------------------\n\n*Link da Land:*\n\npromocao.citroentrianon.com.br/pcd/c4_cactus/\n\n\n\n\n\n*Mensagem de e-mail confidencial.*"
 
@@ -37,14 +37,14 @@ RSpec.describe F1SalesCustom::Email::Parser do
 
       it 'contains website pcd as source name' do
         expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[2][:name])
-      end 
+      end
 
     end
 
     context 'when is about a citroen'  do
       let(:email) do
         email = OpenStruct.new
-        email.to = [email: 'websitelapa@lojateste.f1sales.org']
+        email.to = [email: 'website@lojateste.f1sales.org']
         email.subject = 'Campanha - C4 CACTUS'
         email.body = "Contato via site\n\n*Nome:*\n\nJoao\n\n*E-mail:*\n\njoao.marcos@criah.com.br\n\n*Telefone:*\n\n(11) 1 1111-1111\n\n*Loja:*\n\nGastão Vidigal\n\n*Mensagem:*\n\nTeste\n\n-----------------------------------------------------------------------\n\n*Link da Land:*\n\npromocao.citroentrianon.com.br/pcd/c4_cactus/\n\n\n\n\n\n*Mensagem de e-mail confidencial.*"
 
@@ -55,7 +55,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
 
       it 'contains website novos as source name' do
         expect(parsed_email[:source][:name]).to eq(F1SalesCustom::Email::Source.all[0][:name])
-      end 
+      end
 
       it 'contains name' do
         expect(parsed_email[:customer][:name]).to eq('Joao')
@@ -76,7 +76,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
       context 'when is different format' do
         let(:email) do
           email = OpenStruct.new
-          email.to = [email: 'websitelapa@sampatrianon.f1sales.net']
+          email.to = [email: 'website@sampatrianon.f1sales.net']
           email.subject = 'Solicitação de cotação por marcioklepacz@gmail.com em /seminovos/carros/peugeot-207/1265588'
           email.body = "Site: https://toribapeugeot.com.br/Origem: /carrosNome: marcus vinicius barbosaE-mail: marcuscarequinha@gmail.comTelefone: (11) 99241-1129Mensagem: PRECOS DA EXPERT MINIBUS E FURGAO E SUAS CONFIGURACOES OU FICHA TECNICA"
 
@@ -94,7 +94,7 @@ RSpec.describe F1SalesCustom::Email::Parser do
 
         let(:email) do
           email = OpenStruct.new
-          email.to = [email: 'websitelapa@sampatrianon.f1sales.net']
+          email.to = [email: 'foo@sampatrianon.f1sales.net']
           email.subject = 'Solicitação de cotação por marcioklepacz@gmail.com em /seminovos/carros/peugeot-207/1265588'
           email.body = "Site: https://toribacitroen.com.br/Origem: /seminovos/carros/peugeot-207/1265588Nome: Marcio KlepaczE-mail: marcioklepacz@gmail.comTelefone: (11) 98158-7311Mensagem: Lead teste entrar em contato e descartar"
 

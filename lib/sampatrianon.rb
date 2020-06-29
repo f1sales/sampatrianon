@@ -53,26 +53,26 @@ module Sampatrianon
     end
   end
 
-  
-  class F1SalesCustom::Email::Source 
+
+  class F1SalesCustom::Email::Source
     def self.all
       [
         {
-          email_id: 'websitelapa',
+          email_id: 'website',
           name: 'Website - Lapa - Citroen'
         },
         {
-          email_id: 'websitelapa',
+          email_id: 'website',
           name: 'Website - Lapa - Pegeout'
         },
         {
-          email_id: 'websitelapa',
+          email_id: 'website',
           name: 'Website - Lapa - PCD'
         },
         {
-          email_id: 'websitelapa',
+          email_id: 'website',
           name: 'Website - Lapa - Utilitários'
-        },
+        },        
       ]
     end
   end
@@ -82,7 +82,7 @@ module Sampatrianon
       parsed_email = @email.body.colons_to_hash(/(Telefone|Origem|Nome|Site|E-mail|Mensagem|Link da Land).*?:/, false)
 
       all_sources = F1SalesCustom::Email::Source.all
-      destinatary = @email.to.map { |email| email[:email].split('@').first } 
+      destinatary = @email.to.map { |email| email[:email].split('@').first }
 
       source = all_sources[0]
       source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
