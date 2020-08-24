@@ -2,56 +2,56 @@ require "sampatrianon/version"
 
 require "f1sales_custom/parser"
 require "f1sales_custom/source"
-require "f1sales_custom/hooks"
+# require "f1sales_custom/hooks"
 require "f1sales_helpers"
 require "http"
 
 module Sampatrianon
   class Error < StandardError; end
 
-  class F1SalesCustom::Hooks::Lead
-
-    class << self
-
-      def switch_source(lead)
-        if lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('lapa')
-          lead.source.name + source[:facebook_lapa]
-        elsif lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('gastão')
-          customer = lead.customer
-
-          HTTP.post(
-            'https://trianongastao.f1sales.org/integrations/leads',
-            json: {
-              lead: {
-                message: lead.message,
-                customer: {
-                  name: customer.name,
-                  email: customer.email,
-                  phone: customer.phone,
-                },
-                product: {
-                  name: lead.product.name
-                },
-                source: {
-                  name: lead.source.name
-                }
-              }
-            },
-          )
-
-          return nil
-        else
-          lead.source.name
-        end
-      end
-
-      def source
-        {
-          facebook_lapa: ' - Lapa'
-        }
-      end
-    end
-  end
+  # class F1SalesCustom::Hooks::Lead
+  #
+  #   class << self
+  #
+  #     def switch_source(lead)
+  #       if lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('lapa')
+  #         lead.source.name + source[:facebook_lapa]
+  #       elsif lead.source.name.downcase.include?('facebook') and lead.message.downcase.include?('gastão')
+  #         customer = lead.customer
+  #
+  #         HTTP.post(
+  #           'https://trianongastao.f1sales.org/integrations/leads',
+  #           json: {
+  #             lead: {
+  #               message: lead.message,
+  #               customer: {
+  #                 name: customer.name,
+  #                 email: customer.email,
+  #                 phone: customer.phone,
+  #               },
+  #               product: {
+  #                 name: lead.product.name
+  #               },
+  #               source: {
+  #                 name: lead.source.name
+  #               }
+  #             }
+  #           },
+  #         )
+  #
+  #         return nil
+  #       else
+  #         lead.source.name
+  #       end
+  #     end
+  #
+  #     def source
+  #       {
+  #         facebook_lapa: ' - Lapa'
+  #       }
+  #     end
+  #   end
+  # end
 
 
   class F1SalesCustom::Email::Source
@@ -72,7 +72,7 @@ module Sampatrianon
         {
           email_id: 'website',
           name: 'Website - Lapa - Utilitários'
-        },        
+        },
       ]
     end
   end
