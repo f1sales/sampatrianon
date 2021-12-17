@@ -11,6 +11,7 @@ group :test do
   gem 'rspec'
   gem 'faker'
   gem 'webmock'
+  gem 'byebug'
 end
 
 

@@ -1,5 +1,6 @@
 require File.expand_path '../spec_helper.rb', __FILE__
 require 'ostruct'
+require 'byebug'
 
 RSpec.describe F1SalesCustom::Hooks::Lead do
   let(:lead) do
@@ -48,6 +49,15 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
 
     it 'returns source name' do
       expect(described_class.switch_source(lead)).to eq('Webmotors - Pendentes - Peugeot Partner')
+    end
+  end
+
+  context 'when product name is nil' do
+    let(:source_name) { 'Webmotors - Novos' }
+    let(:product_name) { nil }
+
+    it 'returns source name' do
+      expect(described_class.switch_source(lead)).to eq('Webmotors - Novos')
     end
   end
 end
