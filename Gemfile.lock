@@ -29,6 +29,7 @@ GEM
   specs:
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    byebug (11.1.3)
     concurrent-ruby (1.1.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -86,6 +87,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  byebug
   f1sales_custom-email!
   f1sales_custom-hooks!
   f1sales_helpers!

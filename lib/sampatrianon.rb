@@ -14,6 +14,8 @@ module Sampatrianon
       product_name = lead.product ? lead.product.name : ''
       source_name = lead.source ? lead.source.name : ''
 
+      product_name = '' if product_name.nil?
+
       if product_name.downcase.include?('jumpy')
         "#{source_name} - Citroën Jumpy"
       elsif product_name.downcase.include?('expert')
