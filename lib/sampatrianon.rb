@@ -22,6 +22,8 @@ module Sampatrianon
         "#{source_name} - Peugeot Expert"
       elsif product_name.downcase.include?('partner')
         "#{source_name} - Peugeot Partner"
+      elsif product_name.downcase.include?('new e208 gt')
+        "#{source_name} - E208GT"
       else
         lead.source.name
       end
