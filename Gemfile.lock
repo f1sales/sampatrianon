@@ -22,7 +22,7 @@ GIT
 PATH
   remote: .
   specs:
-    sampatrianon (0.2.2)
+    sampatrianon (0.2.5)
 
 GEM
   remote: https://rubygems.org/
@@ -100,4 +100,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.2.19
+   2.3.10
