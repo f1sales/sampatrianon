@@ -62,8 +62,9 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
   end
 
   context 'when source name is Grow' do
+    let(:source_name) { 'Grow - TORIBA GASTÃO VIDIGAL' }
+
     context 'when product name contains New E208 GT' do
-      let(:source_name) { 'Grow - TORIBA GASTÃO VIDIGAL' }
       let(:product_name) { 'NEW E208 GT' }
 
       it 'return source name' do
@@ -72,9 +73,33 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
     end
 
     context 'when product name contains New E208 GT' do
-      let(:source_name) { 'Grow - TORIBA GASTÃO VIDIGAL' }
-      let(:product_name) { nil }
+      let(:product_name) { 'NEW E-208 GT 21/22' }
 
+      it 'return source name' do
+        expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL - E208GT')
+      end
+    end
+
+    context 'when product name contains New E208 GT' do
+      let(:product_name) { 'NEW E-208 Gt' }
+
+      it 'return source name' do
+        expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL - E208GT')
+      end
+    end
+
+    context 'when product name contains New E208 GT' do
+      let(:product_name) { 'NEW E-208 Gt' }
+      let(:source_name) { 'Webmotors - Novos' }
+
+      it 'return source name' do
+        expect(described_class.switch_source(lead)).to eq('Webmotors - Novos')
+      end
+    end
+
+    context 'when product name contains New E208 GT' do
+      let(:product_name) { nil }
+      
       it 'return source name' do
         expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL')
       end
