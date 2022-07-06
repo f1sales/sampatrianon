@@ -88,6 +88,14 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
       end
     end
 
+    context 'when product name contains Casa por' do
+      let(:product_name) { 'casa por' }
+
+      it 'return source name' do
+        expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL - E208GT')
+      end
+    end
+
     context 'when product name contains New E208 GT' do
       let(:product_name) { 'NEW E-208 Gt' }
       let(:source_name) { 'Webmotors - Novos' }
@@ -99,7 +107,7 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
 
     context 'when product name contains New E208 GT' do
       let(:product_name) { nil }
-      
+
       it 'return source name' do
         expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL')
       end
