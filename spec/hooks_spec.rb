@@ -88,8 +88,8 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
       end
     end
 
-    context 'when product name contains Casa cor' do
-      let(:product_name) { 'casa cor' }
+    context 'when product name contains Casa cor SP' do
+      let(:product_name) { 'casa cor SP' }
 
       it 'return source name' do
         expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL - E208GT')
