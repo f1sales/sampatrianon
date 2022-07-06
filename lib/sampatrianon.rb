@@ -21,7 +21,7 @@ module Sampatrianon
       elsif product_name_down.include?('partner')
         "#{source_name} - Peugeot Partner"
       elsif source_name.downcase.include?('grow')
-        if product_name_down.include?('new e') || product_name_down.include?('casa por')
+        if product_name_down.include?('new e') || product_name_down.include?('casa cor')
           "#{source_name} - E208GT"
         else
           source_name
