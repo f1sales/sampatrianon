@@ -1,35 +1,36 @@
-require "sampatrianon/version"
-
-require "f1sales_custom/parser"
-require "f1sales_custom/source"
-require "f1sales_custom/hooks"
-require "f1sales_helpers"
-require "http"
+require 'sampatrianon/version'
+require 'f1sales_custom/parser'
+require 'f1sales_custom/source'
+require 'f1sales_custom/hooks'
+require 'f1sales_helpers'
+require 'http'
 
 module Sampatrianon
   class Error < StandardError; end
 
   class F1SalesCustom::Hooks::Lead
     def self.switch_source(lead)
-      product_name = lead.product ? lead.product.name : ''
-      source_name = lead.source ? lead.source.name : ''
+      product_name = lead.product&.name || ''
+      product_name_down = product_name.downcase
+      source_name = lead.source&.name || ''
 
-      product_name = '' if product_name.nil?
-
-      if product_name.downcase.include?('jumpy')
+      if product_name_down.include?('jumpy')
         "#{source_name} - Citroën Jumpy"
-      elsif product_name.downcase.include?('expert')
+      elsif product_name_down.include?('expert')
         "#{source_name} - Peugeot Expert"
-      elsif product_name.downcase.include?('partner')
+      elsif product_name_down.include?('partner')
         "#{source_name} - Peugeot Partner"
-      elsif product_name.downcase.include?('new e') && source_name.downcase.include?('grow')
-        "#{source_name} - E208GT"
+      elsif source_name.downcase.include?('grow')
+        if product_name_down.include?('new e') || product_name_down.include?('casa por')
+          "#{source_name} - E208GT"
+        else
+          source_name
+        end
       else
-        lead.source.name
+        source_name
       end
     end
   end
-
 
   class F1SalesCustom::Email::Source
     def self.all
@@ -59,7 +60,7 @@ module Sampatrianon
       parsed_email = @email.body.colons_to_hash(/(Telefone|Origem|Nome|Site|E-mail|Mensagem|Link da Land).*?:/, false)
 
       all_sources = F1SalesCustom::Email::Source.all
-      destinatary = @email.to.map { |email| email[:email].split('@').first }
+      # destinatary = @email.to.map { |email| email[:email].split('@').first }
 
       source = all_sources[0]
       source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
@@ -69,7 +70,7 @@ module Sampatrianon
 
       {
         source: {
-          name: source[:name],
+          name: source[:name]
         },
         customer: {
           name: parsed_email['nome'],
