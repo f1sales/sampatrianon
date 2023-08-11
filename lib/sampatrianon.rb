@@ -33,49 +33,83 @@ module Sampatrianon
   end
 
   class F1SalesCustom::Email::Source
-    def self.all
-      [
+    class << self
+      def all
+        [
+          citroen,
+          peugeot,
+          pcd,
+          utilitarios
+        ]
+      end
+
+      private
+
+      def citroen
         {
           email_id: 'website',
           name: 'Website - Lapa - Citroen'
-        },
+        }
+      end
+
+      def peugeot
         {
           email_id: 'website',
           name: 'Website - Lapa - Pegeout'
-        },
+        }
+      end
+
+      def pcd
         {
           email_id: 'website',
           name: 'Website - Lapa - PCD'
-        },
+        }
+      end
+
+      def utilitarios
         {
           email_id: 'website',
           name: 'Website - Lapa - Utilitários'
         }
-      ]
+      end
     end
   end
 
   class F1SalesCustom::Email::Parser
     def parse
-      all_sources = F1SalesCustom::Email::Source.all
-
       @source = all_sources[0]
-      if (parsed_email['link_da_land'] || parsed_email['origem'] || parsed_email['utmsource'] || '').downcase.include?('peugeot')
-        @source = all_sources[1]
-      end
-      @source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
+      @source = all_sources[1] if choose_campaign('peugeot')
       @source = all_sources[2] if @email.subject.downcase.include?('pcd')
-      if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('utilitarios')
-        @source = all_sources[3]
-      end
+      @source = all_sources[3] if choose_campaign('utilitarios')
 
       package_lead
     end
 
     private
 
+    def all_sources
+      F1SalesCustom::Email::Source.all
+    end
+
     def parsed_email
-      @email.body.colons_to_hash(/(Telefone|Celular|Origem|Nome|Site|E-mail|Email|Mensagem|Loja|Date|Link da Land|utm_source).*?:/, false)
+      @email.body.colons_to_hash(/(#{string_to_regex}).*?:/, false)
+    end
+
+    def string_to_regex
+      'Telefone|Celular|Origem|Nome|Site|E-mail|Email|Mensagem|Loja|Date|Link da Land|utm_source'
+    end
+
+    def choose_campaign(info)
+      dealership_campaigns.any? { |campaign| (campaign || '').downcase[info] }
+    end
+
+    def dealership_campaigns
+      [
+        parsed_email['link_da_land'],
+        parsed_email['origem'],
+        parsed_email['site'],
+        parsed_email['utmsource']
+      ]
     end
 
     def package_lead
