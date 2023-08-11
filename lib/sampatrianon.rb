@@ -57,33 +57,61 @@ module Sampatrianon
 
   class F1SalesCustom::Email::Parser
     def parse
-      parsed_email = @email.body.colons_to_hash(/(Telefone|Celular|Origem|Nome|Site|E-mail|Email|Mensagem|Loja|Date|Link da Land|utm_source).*?:/, false)
-
       all_sources = F1SalesCustom::Email::Source.all
 
-      source = all_sources[0]
+      @source = all_sources[0]
       if (parsed_email['link_da_land'] || parsed_email['origem'] || parsed_email['utmsource'] || '').downcase.include?('peugeot')
-        source = all_sources[1]
+        @source = all_sources[1]
       end
-      source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
-      source = all_sources[2] if @email.subject.downcase.include?('pcd')
+      @source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
+      @source = all_sources[2] if @email.subject.downcase.include?('pcd')
       if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('utilitarios')
-        source = all_sources[3]
+        @source = all_sources[3]
       end
 
+      package_lead
+    end
+
+    private
+
+    def parsed_email
+      @email.body.colons_to_hash(/(Telefone|Celular|Origem|Nome|Site|E-mail|Email|Mensagem|Loja|Date|Link da Land|utm_source).*?:/, false)
+    end
+
+    def package_lead
       {
-        source: {
-          name: source[:name]
-        },
-        customer: {
-          name: parsed_email['nome'],
-          phone: (parsed_email['telefone'] || parsed_email['celular'] || '').tr('^0-9', ''),
-          email: parsed_email['email']
-        },
-        product: { name: (parsed_email['interesse'] || '') },
-        message: (parsed_email['menssage'] || parsed_email['mensagem'] || '').gsub('-', ' ').gsub("\n", ' ').strip,
-        description: parsed_email['assunto']
+        source: source_name,
+        customer: customer,
+        product: product,
+        message: message,
+        description: description
       }
+    end
+
+    def source_name
+      {
+        name: @source[:name]
+      }
+    end
+
+    def customer
+      {
+        name: parsed_email['nome'],
+        phone: (parsed_email['telefone'] || parsed_email['celular'] || '').tr('^0-9', ''),
+        email: parsed_email['email']
+      }
+    end
+
+    def product
+      { name: (parsed_email['interesse'] || '') }
+    end
+
+    def message
+      (parsed_email['menssage'] || parsed_email['mensagem'] || '').gsub('-', ' ').gsub("\n", ' ').strip
+    end
+
+    def description
+      parsed_email['assunto']
     end
   end
 end
