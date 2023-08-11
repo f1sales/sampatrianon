@@ -1,4 +1,4 @@
-require File.expand_path '../spec_helper.rb', __FILE__
+require File.expand_path 'spec_helper.rb', __dir__
 require 'ostruct'
 require 'byebug'
 
@@ -109,6 +109,7 @@ RSpec.describe F1SalesCustom::Hooks::Lead do
       let(:product_name) { nil }
 
       it 'return source name' do
+        byebug
         expect(described_class.switch_source(lead)).to eq('Grow - TORIBA GASTÃO VIDIGAL')
       end
     end
