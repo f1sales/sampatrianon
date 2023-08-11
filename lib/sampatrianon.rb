@@ -50,7 +50,7 @@ module Sampatrianon
         {
           email_id: 'website',
           name: 'Website - Lapa - Utilitários'
-        },
+        }
       ]
     end
   end
@@ -62,10 +62,14 @@ module Sampatrianon
       all_sources = F1SalesCustom::Email::Source.all
 
       source = all_sources[0]
-      source = all_sources[1] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
+      if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('peugeot')
+        source = all_sources[1]
+      end
       source = all_sources[1] if (parsed_email['site'] || '').downcase.include?('peugeot')
       source = all_sources[2] if @email.subject.downcase.include?('pcd')
-      source = all_sources[3] if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('utilitarios')
+      if (parsed_email['link_da_land'] || parsed_email['origem'] || '').downcase.include?('utilitarios')
+        source = all_sources[3]
+      end
 
       {
         source: {
