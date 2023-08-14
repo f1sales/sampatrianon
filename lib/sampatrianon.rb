@@ -9,25 +9,55 @@ module Sampatrianon
   class Error < StandardError; end
 
   class F1SalesCustom::Hooks::Lead
-    def self.switch_source(lead)
-      product_name = lead.product&.name || ''
-      product_name_down = product_name.downcase
-      source_name = lead.source&.name || ''
+    class << self
+      def switch_source(lead)
+        @lead = lead
 
-      if product_name_down.include?('jumpy')
-        "#{source_name} - Citroën Jumpy"
-      elsif product_name_down.include?('expert')
-        "#{source_name} - Peugeot Expert"
-      elsif product_name_down.include?('partner')
-        "#{source_name} - Peugeot Partner"
-      elsif source_name.downcase.include?('grow')
+        set_source
+      end
+
+      private
+
+      def set_source
+        return "#{source_name} - Citroën Jumpy" if citroen_jumpy?
+        return "#{source_name} - Peugeot Expert" if peugeot_expert?
+        return "#{source_name} - Peugeot Partner" if peugeot_partner?
+        return from_grow if from_grow?
+
+        source_name
+      end
+
+      def product_name_down
+        product_name = @lead.product&.name || ''
+        product_name.downcase
+      end
+
+      def source_name
+        @lead.source&.name || ''
+      end
+
+      def citroen_jumpy?
+        product_name_down['jumpy']
+      end
+
+      def peugeot_expert?
+        product_name_down['expert']
+      end
+
+      def peugeot_partner?
+        product_name_down['partner']
+      end
+
+      def from_grow?
+        source_name.downcase['grow']
+      end
+
+      def from_grow
         if product_name_down.include?('new e') || product_name_down.include?('casa cor')
           "#{source_name} - E208GT"
         else
           source_name
         end
-      else
-        source_name
       end
     end
   end
